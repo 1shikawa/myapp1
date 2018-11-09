@@ -1,0 +1,106 @@
+{% load staticfiles %}
+{% load bootstrap4 %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% endblock %}</title>
+    <!-- BootstrapのCSS読み込み -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+
+    <!-- jQuery読み込み -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+
+
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    {% block extrahead %}{% endblock %}
+</head>
+
+
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">書籍管理</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            {% if user.is_authenticated %}
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'ReadingRec:index' %}">書籍一覧</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'ReadingRec:book_add' %}">書籍追加</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'ReadingRec:import' %}">import</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'ReadingRec:export' %}">export</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">ログアウト</a>
+            </li>
+            {% endif %}
+        </ul>
+        {% if user.is_authenticated %}
+        <form class="form-inline my-2 my-lg-0" method="GET" action="{% url 'ReadingRec:index' %}">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="keyword">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        {% endif %}
+    </div>
+</nav>
+
+{% if messages %}
+{# Django のメッセージに記録している内容があればここで表示 #}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="messages mt-3">
+                {% for message in messages %}
+                <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if user.is_authenticated %}
+<div align="right">{{ user.get_username }}でログイン中</div>
+{% else %}
+<div>ログインしていません</div>
+{% endif %}
+
+<div class="container-fluid">
+    {% block contents %}
+    {% endblock %}
+</div>
+
+
+{% block extra_js %}
+{% endblock %}
+
+<!-- jsを書く場所 -->
+{% block script %}
+{% endblock %}
+</body>
+</html>

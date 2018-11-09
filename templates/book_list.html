@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %}書籍の一覧{% endblock title %}
+
+{% block extrahead %}
+<style>
+
+</style>
+{% endblock %}
+
+
+{% block contents %}
+<div class="col-md-12 main">
+    <h2 class="page-header">書籍一覧</h2>
+    <hr>
+    <div class="table-responsive">
+        <form method="post" action="ReadingRec:deleteAll">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>　</th>
+                    <th>ID</th>
+                    <th>本種</th>
+                    <th>書籍名</th>
+                    <th>出版社</th>
+                    <th>ページ数</th>
+                    <th>感想数</th>
+                    <th>総回数</th>
+                    <th>登録者</th>
+                    <th>登録日時</th>
+                    <th>更新日時</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for book in books %}
+                <tr>
+                    <td><input type="checkbox" name="delete_ids" value="{{ book.id }}"></td>
+                    {# 追加する #}
+                    <td>{{ book.id }}</td>
+                    <td>{{ book.bookType }}</td>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.publisher }}</td>
+                    <td>{{ book.page }}</td>
+                    <td>{{ book.impressionCount }}</td>
+                    <td>{{ book.total_readCount }}</td>
+                    <td>{{ book.editer }}</td>
+                    <td>{{ book.created_at}}</td>
+                    <td>{{ book.updated_at}}</td>
+                    <td>
+                        <a href="{% url 'ReadingRec:book_update' book.pk %}" class="btn btn-primary btn-sm">編集</a>
+                        <!--bootstrap-->
+                        <!--<button class="btn btn-danger btn-sm del_confirm" data-toggle="modal" data-target="#deleteModal"-->
+                        <!--data-pk="{{ book.pk }}" data-name="{{ book.name }}"-->
+                        <!--data-url="{% url 'ReadingRec:book_delete' book.pk %}">削除-->
+                        <!--</button>-->
+                        <a href="{% url 'ReadingRec:book_delete' book.pk %}" class="btn btn-danger btn-sm">削除</a>
+                        <a href="{% url 'ReadingRec:impression_list' book.pk %}"
+                           class="btn btn-outline-info btn-sm">感想一覧</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% csrf_token %}
+            <input type="submit" value="チェックしたものを削除">
+            <hr>
+        </form>
+    </div>
+</div>
+
+
+<!-- ページネーション（以下追加） -->
+{% if is_paginated %}
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                                 aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span
+                class="sr-only">Previous</span></a></li>
+        {% endif %}
+        {% for linkpage in page_obj.paginator.page_range %}
+        {% ifequal linkpage page_obj.number %}
+        <li class="page-item active"><a class="page-link" href="#">{{ linkpage }}</a></li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ linkpage }}">{{ linkpage }}</a></li>
+        {% endifequal %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next"><span
+                aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+        {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Next"><span
+                aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+
+{# 削除を確認するモーダル ダイアログ #}
+<!--<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"-->
+<!--aria-hidden="true">-->
+<!--<div class="modal-dialog" role="document">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<h5 class="modal-title" id="deleteModalLabel">確認</h5>-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--<span aria-hidden="true">&times;</span>-->
+<!--</button>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<p>ID: <span id="del_pk"></span></p>-->
+<!--<p>書籍名: <span id="del_name"></span></p>-->
+<!--<p>を削除しますか？</p>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<a href="#" class="btn btn-primary" id="del_url">OK</a>-->
+<!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+$(function() {
+  $('.del_confirm').on('click', function () {
+     $("#del_pk").text($(this).data("pk"));
+     $("#del_name").text($(this).data("name"));
+     $('#del_url').attr('href', $(this).data("url"));
+  });
+});
+
+
+
+
+
+
+
+</script>
+{% endblock  %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}書籍の登録{% endblock title %}
+
+{% block contents %}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h2 class="page-header">書籍の登録</h2>
+    <div class="col-md-5">
+        <form action="" method="post" class="form-horizontal" role="form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-group">
+                <div class="container">
+                    <button class="btn btn-primary btn-sm" type="submit" name="save">追加</button>
+                    <button class="btn btn-primary btn-sm" type="submit" name="save_and_add">保存してもう一つ追加</button>
+                    <button class="btn btn-primary btn-sm" type="submit" name="save_and_edit">保存して編集を続ける</button>
+                    <a href="{% url 'ReadingRec:index' %}" class="btn btn-primary btn-sm">戻る</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

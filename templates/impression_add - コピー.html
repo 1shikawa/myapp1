@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}感想の登録{% endblock title %}
+
+{% block contents %}
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="page-header">感想の登録</h2>
+        <div class="col-md-5">
+         <form action="" method="post" class="form-horizontal" role="form">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="form-group">
+            <div class="container">
+                <button type="submit" class="btn btn-primary">登録</button>
+                <a href="{% url 'ReadingRec:impression_list' book.pk %}" class="btn btn-default btn-sm">戻る</a>
+            </div>
+          </div>
+         </form>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+<form action="" method="POST">
+    <table class="table">
+        <tr>
+            <th>コメント</th>
+            <td>{{ impression.comment }}</td>
+        </tr>
+        <tr>
+            <th>読書回数</th>
+            <td>{{ impression.readCount }}</td>
+        </tr>
+
+    </table>
+    <p>こちらのデータを削除します。</p>
+    <button type="submit" class="btn btn-primary btn-sm">送信</button>
+
+    {% csrf_token %}
+</form>
+{% endblock %}

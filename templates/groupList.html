@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}グループ{% endblock title %}
+
+{% block extrahead %}
+<style>
+
+</style>
+{% endblock %}
+
+
+{% block contents %}
+<div class="col-md-12 main">
+    <h2 class="page-header">グループ</h2>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>本種</th>
+                <th>登録者</th>
+                <th>ページ数</th>
+            </thead>
+            <tbody>
+            {% for grp in group %}
+            <tr>
+                <td>{{ grp.bookType }}</td>
+                <td>{{ grp.editer }}</td>
+                <td>{{ grp.page }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+
+<div class="col-md-10 main">
+    <h2 class="page-header">欲しいものリスト</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>本種</th>
+                <th>書籍名</th>
+                <th>出版社</th>
+                <th>ページ数</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.bookType }}</td>
+                <td>{{ book.name }}</td>
+                <td>{{ book.publisher }}</td>
+                <td>{{ book.page }}</td>
+                <td>
+                        <form action="{% url 'book_delete_wish_list' book.id %}" method="post">
+                            {% csrf_token %}
+                            <p><input value="欲しいものリストから削除" type="submit"/></p>
+                        </form>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock  %}

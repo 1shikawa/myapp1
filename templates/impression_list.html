@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+
+<div class="col-md-12 main">
+    <h2 class="page-header">感想一覧</h2>
+    <hr>
+    <a href="{% url 'ReadingRec:impression_add' book.id %}" class="btn btn-primary btn-sm my-3">追加</a>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>コメント</th>
+                <th>回数</th>
+                <th>登録者</th>
+                <th>登録日時</th>
+                <th>更新日時</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for impression in impressions %}
+            <tr>
+                <td>{{ impression.id }}</td>
+                <td>{{ impression.comment|linebreaksbr }}</td>
+                <td>{{ impression.readCount }}</td>
+                <td>{{ impression.editer }}</td>
+                <td>{{ impression.created_at }}</td>
+                <td>{{ impression.updated_at }}</td>
+                <td>
+                    <a href="{% url 'ReadingRec:impression_edit' book_id=book.id impression_id=impression.id %}"
+                       class="btn btn-primary btn-sm">編集</a>
+                    <a href="{% url 'ReadingRec:impression_delete' book_id=book.id impression_id=impression.id %}"
+                    class="btn btn-danger btn-sm" id="btn_del">削除</a>
+
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'ReadingRec:index' %}" class="btn btn-primary btn-sm">戻る</a>
+    </div>
+</div>
+
+<!-- ページネーション（以下追加） -->
+{% if is_paginated %}
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                                 aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span
+                class="sr-only">Previous</span></a></li>
+        {% endif %}
+        {% for linkpage in page_obj.paginator.page_range %}
+        {% ifequal linkpage page_obj.number %}
+        <li class="page-item active"><a class="page-link" href="#">{{ linkpage }}</a></li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ linkpage }}">{{ linkpage }}</a></li>
+        {% endifequal %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next"><span
+                aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+        {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Next"><span
+                aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{# 削除を確認するモーダル ダイアログ #}
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">確認</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>ID: <span id="del_pk"></span></p>
+                <p>コメント: <span id="del_comment"></span></p>
+                <p>を削除しますか？</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-primary" id="del_url">OK</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+$(function() {
+  $('.del_confirm').on('click', function () {
+     $("#del_pk").text($(this).data("pk"));
+     $("#del_comment").text($(this).data("comment"));
+     $('#del_url').attr('href', $(this).data("url"));
+  });
+});
+
+
+
+
+
+
+</script>
+{% endblock  %}

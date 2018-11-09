@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block title %}書籍の編集{% endblock title %}
+
+{% block contents %}
+
+<div class="col-md-10 main">
+    <h2 class="page-header">書籍の編集</h2>
+    <div class="col-md-5">
+        <form action="" method="post" class="form-horizontal" role="form">
+            <div class="container">
+                <div class="form-group">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="btn btn-primary btn-sm">更新</button>
+                    <a href="{% url 'book_list' %}" class="btn btn-primary btn-sm">戻る</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
