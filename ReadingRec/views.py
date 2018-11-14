@@ -72,7 +72,7 @@ class AddView(generic.CreateView):
 @method_decorator(login_required, name='dispatch')
 class UpdateView(generic.UpdateView):
     model = Book
-    template_name = 'book_add.html'
+    template_name = 'book_edit.html'
     form_class = BookCreateForm
     success_url = reverse_lazy('ReadingRec:index')
 

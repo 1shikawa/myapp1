@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load bootstrap %}
+{% load bootstrap4 %}
 
 {% block title %}書籍の編集{% endblock title %}
 
@@ -14,7 +14,7 @@
                     {% csrf_token %}
                     {{ form }}
                     <button type="submit" class="btn btn-primary btn-sm">更新</button>
-                    <a href="{% url 'book_list' %}" class="btn btn-primary btn-sm">戻る</a>
+                    <a href="{% url 'ReadingRec:index' %}" class="btn btn-primary btn-sm">戻る</a>
                 </div>
             </div>
         </form>
